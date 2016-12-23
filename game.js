@@ -10,15 +10,24 @@ let blockSize = displaySize / 50;
 let snakeP1 = [];
 let snakeP2 = [];
 
-snakeP1.push({
-    x: 5,
-    y: 5,
-});
+snakeP1.push({x: 5, y: 5});
+snakeP2.push({x: 44, y: 44});
 
-snakeP2.push({
-    x: 44,
-    y: 44,
-});
+document.onkeydown = (event) => {
+    event = event || window.event;
+    if (event.keyCode == 38) {
+        console.log("UP");
+    }
+    if (event.keyCode == 39) {
+        console.log("RIGHT");
+    }
+    if (event.keyCode == 40) {
+        console.log("DOWN");
+    }
+    if (event.keyCode == 37) {
+        console.log("LEFT");
+    }
+};
 
 requestAnimationFrame(frame);
 
