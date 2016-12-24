@@ -7,7 +7,7 @@ display.style.height = (displaySize / 2) + "px";
 
 let blockSize = displaySize / 50;
 
-let apple = {x: Math.random() * 50, y: Math.random() * 50};
+let apple = {x: parseInt(Math.random() * 50), y: parseInt(Math.random() * 50)};
 let snakeP1 = [];
 let snakeP2 = [];
 
@@ -18,24 +18,50 @@ snakeP2.push({x: 44, y: 44});
 
 document.onkeydown = (event) => {
     event = event || window.event;
-    if (event.keyCode == 38 && direction != 3)
+    if (event.keyCode == 38)
         direction = 1;
-    if (event.keyCode == 39 && direction != 4)
+    if (event.keyCode == 39)
         direction = 2;
-    if (event.keyCode == 40 && direction != 1)
+    if (event.keyCode == 40)
         direction = 3;
-    if (event.keyCode == 37 && direction != 2)
+    if (event.keyCode == 37)
         direction = 4;
 };
 
 requestAnimationFrame(frame);
 
 function update() {
-
+    if (direction === 1) {
+        snakeP2.unshift({x: snakeP2[0].x, y: snakeP2[0].y - 1});
+        snakeP2.pop();
+        if (snakeP2[0].y < 0)
+            snakeP2[0].y = 49;
+    }
+    if (direction === 2) {
+        snakeP2.unshift({x: snakeP2[0].x + 1, y: snakeP2[0].y});
+        snakeP2.pop();
+        if (snakeP2[0].x > 49)
+            snakeP2[0].x = 0;
+    }
+    if (direction === 3) {
+        snakeP2.unshift({x: snakeP2[0].x, y: snakeP2[0].y + 1});
+        snakeP2.pop();
+        if (snakeP2[0].y > 49)
+            snakeP2[0].y = 0;
+    }
+    if (direction === 4) {
+        snakeP2.unshift({x: snakeP2[0].x - 1, y: snakeP2[0].y});
+        snakeP2.pop();
+        if (snakeP2[0].x < 0)
+            snakeP2[0].x = 49;
+    }
 }
 
 function frame() {
-    requestAnimationFrame(frame);
+    setTimeout(function () {
+        requestAnimationFrame(frame);
+    }, 40);
+    update();
     context.clearRect(0, 0, displaySize, displaySize);
     context.fillStyle = "#8BC34A";
     context.beginPath();
