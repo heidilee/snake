@@ -1,11 +1,11 @@
 const display = document.getElementById("canvas");
+const displaySize = display.width = display.height = Math.min(window.innerWidth, window.innerHeight) * 2;
+
+const blockSize = displaySize / 40;
 const context = display.getContext("2d");
 
-const displaySize = display.width = display.height = Math.min(window.innerWidth, window.innerHeight) * 2;
 display.style.width = (displaySize / 2) + "px";
 display.style.height = (displaySize / 2) + "px";
-
-let blockSize = displaySize / 40;
 
 let apple = {x: parseInt(Math.random() * 40), y: parseInt(Math.random() * 40)};
 let snakeP1 = [];
@@ -40,38 +40,35 @@ document.onkeydown = (event) => {
 requestAnimationFrame(frame);
 
 function update(snake, direction) {
-    if (snake[0].x === apple.x && snake[0].y === apple.y) {
-        snake.push({x: apple.x, y: apple.y});
-        snake.push({x: apple.x, y: apple.y});
-        snake.push({x: apple.x, y: apple.y});
-        snake.push({x: apple.x, y: apple.y});
-        apple.x = parseInt(Math.random() * 40);
-        apple.y = parseInt(Math.random() * 40);
+    let x = snake[0].x;
+    let y = snake[0].y;
+    if (x === apple.x && y == apple.y) {
+        apple = {x: parseInt(Math.random() * 40), y: parseInt(Math.random() * 40)};
+        snake.unshift({x: x, y: y});
+        snake.unshift({x: x, y: y});
+        snake.unshift({x: x, y: y});
+        snake.unshift({x: x, y: y});
     }
-    if (direction === 1) {
-        snake.unshift({x: snake[0].x, y: snake[0].y - 1});
-        snake.pop();
-        if (snake[0].y < 0)
-            snake[0].y = 39;
+    switch (direction) {
+        case 1:
+            snake.unshift({x: x, y: y - 1});
+            snake.pop();
+            break;
+        case 2:
+            snake.unshift({x: x + 1, y: y});
+            snake.pop();
+            break;
+        case 3:
+            snake.unshift({x: x, y: y + 1});
+            snake.pop();
+            break;
+        case 4:
+            snake.unshift({x: x - 1, y: y});
+            snake.pop();
+            break;
     }
-    if (direction === 2) {
-        snake.unshift({x: snake[0].x + 1, y: snake[0].y});
-        snake.pop();
-        if (snake[0].x > 39)
-            snake[0].x = 0;
-    }
-    if (direction === 3) {
-        snake.unshift({x: snake[0].x, y: snake[0].y + 1});
-        snake.pop();
-        if (snake[0].y > 39)
-            snake[0].y = 0;
-    }
-    if (direction === 4) {
-        snake.unshift({x: snake[0].x - 1, y: snake[0].y});
-        snake.pop();
-        if (snake[0].x < 0)
-            snake[0].x = 39;
-    }
+    snake[0].x = ((snake[0].x % 40) + 40) % 40;
+    snake[0].y = ((snake[0].y % 40) + 40) % 40;
 }
 
 function frame() {
@@ -85,37 +82,25 @@ function frame() {
     context.beginPath();
     context.rect(apple.x * blockSize, apple.y * blockSize, blockSize, blockSize);
     context.fill();
-    for (let i = 0; i < snakeP1.length; i++) {
-        if (i === 0) {
+    for (let i = snakeP1.length - 1; i >= 0; i--) {
+        if (i === 0)
             context.fillStyle = "#FFFFFF";
-            context.beginPath();
-        }
-        else {
-            if (snakeP1[i].x % 2 == 1 && snakeP1[i].y % 2 == 0 || snakeP1[i].x % 2 == 0 && snakeP1[i].y % 2 == 1) {
-                context.fillStyle = "#2196F3";
-                context.beginPath();
-            } else {
-                context.fillStyle = "#03A9F4";
-                context.beginPath();
-            }
-        }
+        else if (snakeP1[i].x % 2 === snakeP1[i].y % 2)
+            context.fillStyle = "#2196F3";
+        else
+            context.fillStyle = "#1E88E5";
+        context.beginPath();
         context.rect(snakeP1[i].x * blockSize, snakeP1[i].y * blockSize, blockSize, blockSize);
         context.fill();
     }
-    for (let i = 0; i < snakeP2.length; i++) {
-        if (i === 0) {
+    for (let i = snakeP2.length - 1; i >= 0; i--) {
+        if (i === 0)
             context.fillStyle = "#FFFFFF";
-            context.beginPath();
-        }
-        else {
-            if (snakeP2[i].x % 2 == 1 && snakeP2[i].y % 2 == 0 || snakeP2[i].x % 2 == 0 && snakeP2[i].y % 2 == 1) {
-                context.fillStyle = "#f44336";
-                context.beginPath();
-            } else {
-                context.fillStyle = "#E91E63";
-                context.beginPath();
-            }
-        }
+        else if (snakeP2[i].x % 2 === snakeP2[i].y % 2)
+            context.fillStyle = "#f44336";
+        else
+            context.fillStyle = "#e53935";
+        context.beginPath();
         context.rect(snakeP2[i].x * blockSize, snakeP2[i].y * blockSize, blockSize, blockSize);
         context.fill();
     }
