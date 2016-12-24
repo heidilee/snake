@@ -85,14 +85,38 @@ function frame() {
     context.beginPath();
     context.rect(apple.x * blockSize, apple.y * blockSize, blockSize, blockSize);
     context.fill();
-    context.fillStyle = "#03A9F4";
-    context.beginPath();
-    for (let i = 0; i < snakeP1.length; i++)
+    for (let i = 0; i < snakeP1.length; i++) {
+        if (i === 0) {
+            context.fillStyle = "#FFFFFF";
+            context.beginPath();
+        }
+        else {
+            if (snakeP1[i].x % 2 == 1 && snakeP1[i].y % 2 == 0 || snakeP1[i].x % 2 == 0 && snakeP1[i].y % 2 == 1) {
+                context.fillStyle = "#2196F3";
+                context.beginPath();
+            } else {
+                context.fillStyle = "#03A9F4";
+                context.beginPath();
+            }
+        }
         context.rect(snakeP1[i].x * blockSize, snakeP1[i].y * blockSize, blockSize, blockSize);
-    context.fill();
-    context.fillStyle = "#f44336";
-    context.beginPath();
-    for (let i = 0; i < snakeP2.length; i++)
+        context.fill();
+    }
+    for (let i = 0; i < snakeP2.length; i++) {
+        if (i === 0) {
+            context.fillStyle = "#FFFFFF";
+            context.beginPath();
+        }
+        else {
+            if (snakeP2[i].x % 2 == 1 && snakeP2[i].y % 2 == 0 || snakeP2[i].x % 2 == 0 && snakeP2[i].y % 2 == 1) {
+                context.fillStyle = "#f44336";
+                context.beginPath();
+            } else {
+                context.fillStyle = "#E91E63";
+                context.beginPath();
+            }
+        }
         context.rect(snakeP2[i].x * blockSize, snakeP2[i].y * blockSize, blockSize, blockSize);
-    context.fill();
+        context.fill();
+    }
 }
