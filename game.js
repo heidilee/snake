@@ -11,49 +11,66 @@ let apple = {x: parseInt(Math.random() * 40), y: parseInt(Math.random() * 40)};
 let snakeP1 = [];
 let snakeP2 = [];
 
-let direction = 0;
+let directionP1 = 0;
+let directionP2 = 0;
 
 snakeP1.push({x: 5, y: 5});
 snakeP2.push({x: 34, y: 34});
 
 document.onkeydown = (event) => {
     event = event || window.event;
+    if (event.keyCode == 87)
+        directionP1 = 1;
+    if (event.keyCode == 68)
+        directionP1 = 2;
+    if (event.keyCode == 83)
+        directionP1 = 3;
+    if (event.keyCode == 65)
+        directionP1 = 4;
     if (event.keyCode == 38)
-        direction = 1;
+        directionP2 = 1;
     if (event.keyCode == 39)
-        direction = 2;
+        directionP2 = 2;
     if (event.keyCode == 40)
-        direction = 3;
+        directionP2 = 3;
     if (event.keyCode == 37)
-        direction = 4;
+        directionP2 = 4;
 };
 
 requestAnimationFrame(frame);
 
-function update() {
+function update(snake, direction) {
+    if (snake[0].x === apple.x && snake[0].y === apple.y) {
+        snake.push({x: apple.x, y: apple.y});
+        snake.push({x: apple.x, y: apple.y});
+        snake.push({x: apple.x, y: apple.y});
+        snake.push({x: apple.x, y: apple.y});
+        apple.x = parseInt(Math.random() * 40);
+        apple.y = parseInt(Math.random() * 40);
+    }
     if (direction === 1) {
-        snakeP2.unshift({x: snakeP2[0].x, y: snakeP2[0].y - 1});
-        snakeP2.pop();
-        if (snakeP2[0].y < 0)
-            snakeP2[0].y = 39;
+        snake.unshift({x: snake[0].x, y: snake[0].y - 1});
+        snake.pop();
+        if (snake[0].y < 0)
+            snake[0].y = 39;
     }
     if (direction === 2) {
-        snakeP2.unshift({x: snakeP2[0].x + 1, y: snakeP2[0].y});
-        snakeP2.pop();
-        if (snakeP2[0].x > 39)
-            snakeP2[0].x = 0;
+        snake.unshift({x: snake[0].x + 1, y: snake[0].y});
+        snake.pop();
+        if (snake[0].x > 39)
+            snake[0].x = 0;
     }
     if (direction === 3) {
-        snakeP2.unshift({x: snakeP2[0].x, y: snakeP2[0].y + 1});
-        snakeP2.pop();
-        if (snakeP2[0].y > 39)
-            snakeP2[0].y = 0;
+        snake.unshift({x: snake[0].x, y: snake[0].y + 1});
+        snake.pop();
+        if (snake[0].y > 39)
+            snake[0].y = 0;
     }
     if (direction === 4) {
-        snakeP2.unshift({x: snakeP2[0].x - 1, y: snakeP2[0].y});
-        snakeP2.pop();
-        if (snakeP2[0].x < 0)
-            snakeP2[0].x = 39;
+        snake.unshift({x: snake[0].x - 1, y: snake[0].y});
+        snake.pop();
+        if (snake[0].x < 0)
+            snake[0].x = 39;
     }
 }
 
@@ -61,7 +78,8 @@ function frame() {
     setTimeout(function () {
         requestAnimationFrame(frame);
     }, 40);
-    update();
+    update(snakeP1, directionP1);
+    update(snakeP2, directionP2);
     context.clearRect(0, 0, displaySize, displaySize);
     context.fillStyle = "#8BC34A";
     context.beginPath();
