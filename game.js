@@ -5,16 +5,16 @@ const displaySize = display.width = display.height = Math.min(window.innerWidth,
 display.style.width = (displaySize / 2) + "px";
 display.style.height = (displaySize / 2) + "px";
 
-let blockSize = displaySize / 50;
+let blockSize = displaySize / 40;
 
-let apple = {x: parseInt(Math.random() * 50), y: parseInt(Math.random() * 50)};
+let apple = {x: parseInt(Math.random() * 40), y: parseInt(Math.random() * 40)};
 let snakeP1 = [];
 let snakeP2 = [];
 
 let direction = 0;
 
 snakeP1.push({x: 5, y: 5});
-snakeP2.push({x: 44, y: 44});
+snakeP2.push({x: 34, y: 34});
 
 document.onkeydown = (event) => {
     event = event || window.event;
@@ -35,25 +35,25 @@ function update() {
         snakeP2.unshift({x: snakeP2[0].x, y: snakeP2[0].y - 1});
         snakeP2.pop();
         if (snakeP2[0].y < 0)
-            snakeP2[0].y = 49;
+            snakeP2[0].y = 39;
     }
     if (direction === 2) {
         snakeP2.unshift({x: snakeP2[0].x + 1, y: snakeP2[0].y});
         snakeP2.pop();
-        if (snakeP2[0].x > 49)
+        if (snakeP2[0].x > 39)
             snakeP2[0].x = 0;
     }
     if (direction === 3) {
         snakeP2.unshift({x: snakeP2[0].x, y: snakeP2[0].y + 1});
         snakeP2.pop();
-        if (snakeP2[0].y > 49)
+        if (snakeP2[0].y > 39)
             snakeP2[0].y = 0;
     }
     if (direction === 4) {
         snakeP2.unshift({x: snakeP2[0].x - 1, y: snakeP2[0].y});
         snakeP2.pop();
         if (snakeP2[0].x < 0)
-            snakeP2[0].x = 49;
+            snakeP2[0].x = 39;
     }
 }
 
