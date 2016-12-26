@@ -6,36 +6,45 @@ const blockSize = displaySize / gridSize;
 const context = display.getContext("2d");
 
 let apple = {x: parseInt(Math.random() * gridSize), y: parseInt(Math.random() * gridSize)};
-let snakeP1 = {direction: 0, directionRequest: 0, colorLight: "#2196F3", colorDark: "#1E88E5", nodes: [{x: 5, y: 5}], score: 0};
-let snakeP2 = {direction: 0, directionRequest: 0, colorLight: "#f44336", colorDark: "#e53935", nodes: [{x: 34, y: 34}], score: 0};
+let snakes = [{
+    direction: 0,
+    directionRequest: 0,
+    colorLight: "#2196F3",
+    colorDark: "#1E88E5",
+    keyCodes: [87, 68, 83, 65],
+    nodes: [{x: 5, y: 5}],
+    score: 0
+}, {
+    direction: 0,
+    directionRequest: 0,
+    colorLight: "#f44336",
+    colorDark: "#e53935",
+    keyCodes: [38, 39, 40, 37],
+    nodes: [{x: gridSize - 6, y: gridSize - 6}],
+    score: 0
+}];
 
 display.style.width = (displaySize / 2) + "px";
 display.style.height = (displaySize / 2) + "px";
 
 document.onkeydown = (event) => {
     event = event || window.event;
-    if (event.keyCode === 87)
-        snakeP1.directionRequest = 1;
-    if (event.keyCode === 68)
-        snakeP1.directionRequest = 2;
-    if (event.keyCode === 83)
-        snakeP1.directionRequest = 3;
-    if (event.keyCode === 65)
-        snakeP1.directionRequest = 4;
-    if (event.keyCode === 38)
-        snakeP2.directionRequest = 1;
-    if (event.keyCode === 39)
-        snakeP2.directionRequest = 2;
-    if (event.keyCode === 40)
-        snakeP2.directionRequest = 3;
-    if (event.keyCode === 37)
-        snakeP2.directionRequest = 4;
+    snakes.forEach((snake) => {
+        if (event.keyCode === snake.keyCodes[0])
+            snake.directionRequest = 1;
+        if (event.keyCode === snake.keyCodes[1])
+            snake.directionRequest = 2;
+        if (event.keyCode === snake.keyCodes[2])
+            snake.directionRequest = 3;
+        if (event.keyCode === snake.keyCodes[3])
+            snake.directionRequest = 4;
+    });
 };
 
 requestAnimationFrame(frame);
 
 function frame() {
-    setTimeout(function () {
+    setTimeout(() => {
         requestAnimationFrame(frame);
     }, 40);
     context.clearRect(0, 0, displaySize, displaySize);
@@ -43,10 +52,8 @@ function frame() {
     context.beginPath();
     context.rect(apple.x * blockSize, apple.y * blockSize, blockSize, blockSize);
     context.fill();
-    updateSnake(snakeP1);
-    updateSnake(snakeP2);
-    drawSnake(snakeP1);
-    drawSnake(snakeP2);
+    snakes.forEach(updateSnake);
+    snakes.forEach(drawSnake);
 }
 
 function updateSnake(snake) {
