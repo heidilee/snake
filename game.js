@@ -11,6 +11,8 @@ let apple = {x: parseInt(Math.random() * 40), y: parseInt(Math.random() * 40)};
 let snakeP1 = [];
 let snakeP2 = [];
 
+let directionRequestP1 = 0;
+let directionRequestP2 = 0;
 let directionP1 = 0;
 let directionP2 = 0;
 
@@ -20,26 +22,26 @@ snakeP2.push({x: 34, y: 34});
 document.onkeydown = (event) => {
     event = event || window.event;
     if (event.keyCode == 87)
-        directionP1 = 1;
+        directionRequestP1 = 1;
     if (event.keyCode == 68)
-        directionP1 = 2;
+        directionRequestP1 = 2;
     if (event.keyCode == 83)
-        directionP1 = 3;
+        directionRequestP1 = 3;
     if (event.keyCode == 65)
-        directionP1 = 4;
+        directionRequestP1 = 4;
     if (event.keyCode == 38)
-        directionP2 = 1;
+        directionRequestP2 = 1;
     if (event.keyCode == 39)
-        directionP2 = 2;
+        directionRequestP2 = 2;
     if (event.keyCode == 40)
-        directionP2 = 3;
+        directionRequestP2 = 3;
     if (event.keyCode == 37)
-        directionP2 = 4;
+        directionRequestP2 = 4;
 };
 
 requestAnimationFrame(frame);
 
-function update(snake, direction) {
+function update(snake, directionRequest) {
     let x = snake[0].x;
     let y = snake[0].y;
     if (x === apple.x && y == apple.y) {
@@ -49,7 +51,7 @@ function update(snake, direction) {
         snake.unshift({x: x, y: y});
         snake.unshift({x: x, y: y});
     }
-    switch (direction) {
+    switch (directionRequest) {
         case 1:
             snake.unshift({x: x, y: y - 1});
             snake.pop();
@@ -75,7 +77,13 @@ function frame() {
     setTimeout(function () {
         requestAnimationFrame(frame);
     }, 40);
+    if ((directionP1 % 2 !== directionRequestP1 % 2) || directionP1 === 0) {
+        directionP1 = directionRequestP1;
+    }
     update(snakeP1, directionP1);
+    if ((directionP2 % 2 !== directionRequestP2 % 2) || directionP2 === 0) {
+        directionP2 = directionRequestP2;
+    }
     update(snakeP2, directionP2);
     context.clearRect(0, 0, displaySize, displaySize);
     context.fillStyle = "#8BC34A";
