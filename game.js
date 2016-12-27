@@ -13,7 +13,7 @@ let snakes = [{
     colorDark: "#1E88E5",
     keyCodes: [87, 68, 83, 65],
     nodes: [{x: 5, y: 5}],
-    score: 0
+    score: 0,
 }, {
     direction: 0,
     directionRequest: 0,
@@ -21,7 +21,7 @@ let snakes = [{
     colorDark: "#e53935",
     keyCodes: [38, 39, 40, 37],
     nodes: [{x: gridSize - 6, y: gridSize - 6}],
-    score: 0
+    score: 0,
 }];
 
 display.style.width = (displaySize / 2) + "px";
@@ -62,7 +62,10 @@ function updateSnake(snake) {
     let x = snake.nodes[0].x;
     let y = snake.nodes[0].y;
     if (x === apple.x && y === apple.y) {
-        apple = {x: parseInt(Math.random() * gridSize), y: parseInt(Math.random() * gridSize)};
+        apple = {
+            x: parseInt(Math.random() * gridSize),
+            y: parseInt(Math.random() * gridSize),
+        };
         snake.score++;
         let end = snake.nodes[snake.nodes.length - 1];
         snake.nodes.push({x: end.x, y: end.y});

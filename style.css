@@ -19,16 +19,19 @@ p {
 
 .display {
     background-color: #424242;
-    left: 50%;
-    position: absolute;
-    top: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    -moz-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
 }
 
-.fill-screen {
+.flex {
     width: 100%;
     height: 100%;
+    align-items: center;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    -webkit-box-align: center;
+    display: flex;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    -ms-flex-align: center;
+    -ms-flex-pack: center;
+    justify-content: center;
 }
