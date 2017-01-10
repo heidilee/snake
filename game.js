@@ -61,6 +61,9 @@ function updateSnake(snake) {
         snake.direction = snake.directionRequest;
     let x = snake.nodes[0].x;
     let y = snake.nodes[0].y;
+    for (let i = 1; i < snake.nodes.length; i++)
+        if (x === snake.nodes[i].x && y === snake.nodes[i].y)
+            alert("Collision");
     if (x === apple.x && y === apple.y) {
         apple = {
             x: parseInt(Math.random() * gridSize),
