@@ -1,9 +1,12 @@
 const display = document.getElementById("canvas");
-const displaySize = display.width = display.height = Math.min(window.innerWidth, window.innerHeight) * 2;
+const context = display.getContext("2d");
 const gridSize = 40;
 
-const blockSize = displaySize / gridSize;
-const context = display.getContext("2d");
+let displaySize = display.width = display.height = Math.min(window.innerWidth, window.innerHeight) * 2;
+let blockSize = displaySize / gridSize;
+
+display.style.width = (displaySize / 2) + "px";
+display.style.height = (displaySize / 2) + "px";
 
 let apple = {x: parseInt(Math.random() * gridSize), y: parseInt(Math.random() * gridSize)};
 let snakes = [{
@@ -24,9 +27,6 @@ let snakes = [{
     score: 0,
 }];
 
-display.style.width = (displaySize / 2) + "px";
-display.style.height = (displaySize / 2) + "px";
-
 document.onkeydown = (event) => {
     event = event || window.event;
     snakes.forEach((snake) => {
@@ -39,6 +39,13 @@ document.onkeydown = (event) => {
         if (event.keyCode === snake.keyCodes[3])
             snake.directionRequest = 4;
     });
+};
+
+window.onresize = () => {
+    displaySize = display.width = display.height = Math.min(window.innerWidth, window.innerHeight) * 2;
+    blockSize = displaySize / gridSize;
+    display.style.width = (displaySize / 2) + "px";
+    display.style.height = (displaySize / 2) + "px";
 };
 
 requestAnimationFrame(frame);
