@@ -1,0 +1,19 @@
+{
+  "name": "snake",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heidilee/snake.git"
+  },
+  "author": "Heidi Lee + Scott Mangiapane",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/heidilee/snake/issues"
+  },
+  "homepage": "https://github.com/heidilee/snake#readme"
+}
