@@ -1,7 +1,28 @@
 const display = document.getElementById("canvas");
 const context = display.getContext("2d");
-const gridSize = 40;
 const socket = io();
+
+const colors =
+	[	["#E53935", "#F44336"],
+		["#D81B60", "#E91E63"],
+		["#8E24AA", "#9C27B0"],
+		["#5E35B1", "#673AB7"],
+		["#3949AB", "#3F51B5"],
+		["#1E88E5", "#2196F3"],
+		["#039BE5", "#03A9F4"],
+		["#00ACC1", "#00BCD4"],
+		["#00897B", "#009688"],
+		["#43A047", "#4CAF50"],
+		["#7CB342", "#8BC34A"],
+		["#C0CA33", "#CDDC39"],
+		["#FDD835", "#FFEB3B"],
+		["#FFB300", "#FFC107"],
+		["#FB8C00", "#FF9800"],
+		["#F4511E", "#FF5722"],
+		["#6D4C41", "#795548"],
+		["#757575", "#9E9E9E"],
+		["#546E7A", "#607D8B"]	];
+const gridSize = 40;
 
 let displaySize = display.width = display.height = Math.min(window.innerWidth, window.innerHeight) * 2;
 let blockSize = displaySize / gridSize;
@@ -19,11 +40,10 @@ socket.on("update", function (data) {
 });
 
 let player = {
+	color: parseInt(Math.random() * colors.length),
 	direction: 0,
 	directionRequest: 0,
-	colorLight: "#2196F3",
-	colorDark: "#1E88E5",
-	keyCodes: [87, 68, 83, 65],
+	keyCodes: [37, 38, 39, 40],
 	nodes: [{x: 5, y: 5}],
 	score: 0,
 };
@@ -65,9 +85,9 @@ function drawSnake(snake) {
 		if (i === 0)
 			context.fillStyle = "#FFFFFF";
 		else if (snake.nodes[i].x % 2 === snake.nodes[i].y % 2)
-			context.fillStyle = snake.colorLight;
+			context.fillStyle = colors[snake.color][1];
 		else
-			context.fillStyle = snake.colorDark;
+			context.fillStyle = colors[snake.color][0];
 		context.beginPath();
 		context.rect(snake.nodes[i].x * blockSize, snake.nodes[i].y * blockSize, blockSize, blockSize);
 		context.fill();

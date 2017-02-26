@@ -70,19 +70,19 @@ function updateSnake(snake) {
 	}
 	switch (snake.direction) {
 		case 1:
-			snake.nodes.unshift({x: x, y: y - 1});
+			snake.nodes.unshift({x: x - 1, y: y});
 			snake.nodes.pop();
 			break;
 		case 2:
-			snake.nodes.unshift({x: x + 1, y: y});
+			snake.nodes.unshift({x: x, y: y - 1});
 			snake.nodes.pop();
 			break;
 		case 3:
-			snake.nodes.unshift({x: x, y: y + 1});
+			snake.nodes.unshift({x: x + 1, y: y});
 			snake.nodes.pop();
 			break;
 		case 4:
-			snake.nodes.unshift({x: x - 1, y: y});
+			snake.nodes.unshift({x: x, y: y + 1});
 			snake.nodes.pop();
 			break;
 	}
