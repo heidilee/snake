@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/heidilee/snake/issues"
   },
-  "homepage": "https://github.com/heidilee/snake#readme"
+  "homepage": "https://github.com/heidilee/snake#readme",
+  "dependencies": {
+    "express": "latest",
+    "socket.io": "latest"
+  }
 }
