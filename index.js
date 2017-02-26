@@ -25,17 +25,22 @@ let apple = {x: parseInt(Math.random() * gridSize), y: parseInt(Math.random() * 
 let snakes = {};
 
 io.sockets.on("connection", function(client) {
-	console.log("User connected");
+	client.id = Math.random();
+	client.isPlaying = false;
+	clients[client.id] = client;
+	console.log(client.id + " connected");
 	client.on("joinGame", function(snake) {
-		console.log(snake.id + " joined the game");
-		clients[snake.id] = client;
-		console.log("Added " + snake.id + " to the client list");
-		console.log("There are " + Object.keys(clients).length + " clients total");
-		snakes[snake.id] = snake;
+		snakes[client.id] = snake;
+		client.isPlaying = true;
+		console.log(client.id + " joined the game");
 	});
-	client.on("keyPress", function(keyPress) {
-		console.log(keyPress.id + " requested direction " + keyPress.direction);
-		snakes[keyPress.id].directionRequest = keyPress.direction;
+	client.on("keyPress", function(direction) {
+		if (client.isPlaying)
+			snakes[client.id].directionRequest = direction;
+	});
+	client.on("disconnect", function () {
+		delete clients[client.id];
+		console.log(client.id + " left the game");
 	});
 });
 

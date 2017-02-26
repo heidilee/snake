@@ -23,7 +23,6 @@ let player = {
 	directionRequest: 0,
 	colorLight: "#2196F3",
 	colorDark: "#1E88E5",
-	id: "sket" + Math.random(),
 	keyCodes: [87, 68, 83, 65],
 	nodes: [{x: 5, y: 5}],
 	score: 0,
@@ -41,7 +40,7 @@ document.onkeydown = function (event) {
 		player.directionRequest = 3;
 	if (event.keyCode === player.keyCodes[3])
 		player.directionRequest = 4;
-	socket.emit("keyPress", {id: player.id, direction: player.directionRequest});
+	socket.emit("keyPress", player.directionRequest);
 };
 
 window.onresize = function () {
