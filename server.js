@@ -2,6 +2,7 @@
 
 let express = require("express")
 let app = express();
+let port = process.env.PORT || 8080;
 
 app.use(express.static(__dirname + "/client"));
 
@@ -9,8 +10,7 @@ app.all("*", function(req, res) {
 	res.redirect("/");
 });
 
-let server = app.listen(8080, function () {
-	let port = server.address().port;
+let server = app.listen(port, function () {
 	console.log("Server running at port %s", port);
 });
 
