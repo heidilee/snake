@@ -30,7 +30,7 @@ let blockSize = displaySize / gridSize;
 display.style.width = (displaySize / 2) + "px";
 display.style.height = (displaySize / 2) + "px";
 
-let apple = {x: 0, y: 0};
+let apple = {};
 let snakes = {};
 
 socket.on("update", function (data) {
@@ -44,7 +44,7 @@ let player = {
 	direction: 0,
 	directionRequest: 0,
 	keyCodes: [37, 38, 39, 40],
-	nodes: [{x: 5, y: 5}],
+	nodes: [{x: parseInt(Math.random() * gridSize), y: parseInt(Math.random() * gridSize)}],
 	score: 0,
 };
 
