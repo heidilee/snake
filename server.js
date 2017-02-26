@@ -1,27 +1,22 @@
-// SERVER
+const express = require("express")
 
-let express = require("express")
-let app = express();
-let port = process.env.PORT || 8080;
+const app = express();
+const port = process.env.PORT || 8080;
 
 app.use(express.static(__dirname + "/client"));
-
 app.all("*", function(req, res) {
 	res.redirect("/");
 });
 
-let server = app.listen(port, function () {
+const server = app.listen(port, function () {
 	console.log("Server running at port %s", port);
 });
-
-let clients = {};
-let io = require("socket.io") (server);
-
-// GAME
+const io = require("socket.io") (server);
 
 const gridSize = 40;
 
 let apple = {x: parseInt(Math.random() * gridSize), y: parseInt(Math.random() * gridSize)};
+let clients = {};
 let snakes = {};
 
 io.sockets.on("connection", function(client) {
@@ -40,6 +35,7 @@ io.sockets.on("connection", function(client) {
 	});
 	client.on("disconnect", function () {
 		delete clients[client.id];
+		delete snakes[client.id];
 		console.log(client.id + " left the game");
 	});
 });
@@ -60,7 +56,7 @@ function updateSnake(snake) {
 	let y = snake.nodes[0].y;
 	for (let i = 1; i < snake.nodes.length; i++)
 		if (x === snake.nodes[i].x && y === snake.nodes[i].y)
-			console.log(snake.id + " has collided");
+			; // do nothing
 	if (x === apple.x && y === apple.y) {
 		apple = {
 			x: parseInt(Math.random() * gridSize),
