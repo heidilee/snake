@@ -17,6 +17,10 @@ display.style.height = (displaySize / 2) + "px";
 let apple = {};
 let snakes = {};
 
+socket.on("collision", function () {
+    //alert("You ate yourself :'(");
+});
+
 socket.on("update", function (data) {
     apple = data.apple;
     snakes = data.snakes;
@@ -25,11 +29,7 @@ socket.on("update", function (data) {
 
 let player = {
     color: parseInt(Math.random() * colors.length),
-    direction: 0,
-    directionRequest: 0,
     keyCodes: [37, 38, 39, 40],
-    nodes: [{x: parseInt(Math.random() * gridSize), y: parseInt(Math.random() * gridSize)}],
-    score: 0,
 };
 
 socket.emit("joinGame", player);
@@ -57,6 +57,7 @@ window.onresize = function () {
 function frame() {
     context.clearRect(0, 0, displaySize, displaySize);
     context.fillStyle = "#8BC34A";
+    context.globalAlpha = 1.0;
     context.beginPath();
     context.rect(apple.x * blockSize, apple.y * blockSize, blockSize, blockSize);
     context.fill();
@@ -72,6 +73,7 @@ function drawSnake(snake) {
             context.fillStyle = colors[snake.color][1];
         else
             context.fillStyle = colors[snake.color][0];
+        context.globalAlpha = snake.opacity;
         context.beginPath();
         context.rect(snake.nodes[i].x * blockSize, snake.nodes[i].y * blockSize, blockSize, blockSize);
         context.fill();
