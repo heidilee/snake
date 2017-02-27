@@ -17,8 +17,9 @@ display.style.height = (displaySize / 2) + "px";
 let apple = {};
 let snakes = {};
 
-socket.on("collision", function () {
-    //alert("You ate yourself :'(");
+socket.on("collision", function (score) {
+    alert("You died 😢\nYour score was " + score);
+    socket.emit("joinGame", player);
 });
 
 socket.on("update", function (data) {
@@ -56,13 +57,13 @@ window.onresize = function () {
 
 function frame() {
     context.clearRect(0, 0, displaySize, displaySize);
+    for (let key in snakes)
+        drawSnake(snakes[key]);
     context.fillStyle = "#8BC34A";
     context.globalAlpha = 1.0;
     context.beginPath();
     context.rect(apple.x * blockSize, apple.y * blockSize, blockSize, blockSize);
     context.fill();
-    for (let key in snakes)
-        drawSnake(snakes[key]);
 }
 
 function drawSnake(snake) {

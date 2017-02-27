@@ -29,7 +29,7 @@ io.on("connection", function (client) {
         snake.direction = 0;
         snake.directionRequest = 0;
         snake.opacity = 1.0;
-        snake.nodes = [{x: parseInt(Math.random() * gridSize), y: parseInt(Math.random() * gridSize)}];
+        snake.nodes = [{x: parseInt(Math.random() * gridSize), y: parseInt(Math.random() * gridSize)}, {}];
         snake.score = 0;
         snakes[client.id] = snake;
         client.isPlaying = true;
@@ -56,52 +56,52 @@ setInterval(function () {
 }, 40);
 
 let updateSnake = function (key, snake) {
-    if (snake.direction === 0 || snake.direction % 2 !== snake.directionRequest % 2)
-        snake.direction = snake.directionRequest;
-    let x = snake.nodes[0].x;
-    let y = snake.nodes[0].y;
-    for (let i = 1; i < snake.nodes.length; i++)
-        if (x === snake.nodes[i].x && y === snake.nodes[i].y) {
-            console.log("Client " + key + " has left the game.");
-            clients[key].isPlaying = false;
-            clients[key].emit("collision");
+    if (clients[key].isPlaying) {
+        if (snake.direction === 0 || snake.direction % 2 !== snake.directionRequest % 2)
+            snake.direction = snake.directionRequest;
+        let x = snake.nodes[0].x;
+        let y = snake.nodes[0].y;
+        switch (snake.direction) {
+            case 1:
+                snake.nodes.unshift({x: x - 1, y: y});
+                snake.nodes.pop();
+                break;
+            case 2:
+                snake.nodes.unshift({x: x, y: y - 1});
+                snake.nodes.pop();
+                break;
+            case 3:
+                snake.nodes.unshift({x: x + 1, y: y});
+                snake.nodes.pop();
+                break;
+            case 4:
+                snake.nodes.unshift({x: x, y: y + 1});
+                snake.nodes.pop();
+                break;
         }
-    if (x === apple.x && y === apple.y) {
-        apple = {
-            x: parseInt(Math.random() * gridSize),
-            y: parseInt(Math.random() * gridSize),
-        };
-        snake.score++;
-        let end = snake.nodes[snake.nodes.length - 1];
-        snake.nodes.push({x: end.x, y: end.y});
-        snake.nodes.push({x: end.x, y: end.y});
-        snake.nodes.push({x: end.x, y: end.y});
-    }
-    switch (snake.direction) {
-        case 1:
-            snake.nodes.unshift({x: x - 1, y: y});
-            snake.nodes.pop();
-            break;
-        case 2:
-            snake.nodes.unshift({x: x, y: y - 1});
-            snake.nodes.pop();
-            break;
-        case 3:
-            snake.nodes.unshift({x: x + 1, y: y});
-            snake.nodes.pop();
-            break;
-        case 4:
-            snake.nodes.unshift({x: x, y: y + 1});
-            snake.nodes.pop();
-            break;
-    }
-    snake.nodes[0].x = ((snake.nodes[0].x % gridSize) + gridSize) % gridSize;
-    snake.nodes[0].y = ((snake.nodes[0].y % gridSize) + gridSize) % gridSize;
-    if (!clients[key].isPlaying)
+        x = snake.nodes[0].x = ((snake.nodes[0].x % gridSize) + gridSize) % gridSize;
+        y = snake.nodes[0].y = ((snake.nodes[0].y % gridSize) + gridSize) % gridSize;
+        for (let i = 1; i < snake.nodes.length; i++)
+            if (x === snake.nodes[i].x && y === snake.nodes[i].y) {
+                console.log("Client " + key + " has left the game.");
+                clients[key].isPlaying = false;
+            }
+        if (x === apple.x && y === apple.y) {
+            apple = {
+                x: parseInt(Math.random() * gridSize),
+                y: parseInt(Math.random() * gridSize),
+            };
+            snake.score++;
+            snake.nodes.push({});
+            snake.nodes.push({});
+        }
+    } else
         snake.opacity -= 0.1;
     if (snake.opacity < 0) {
         delete snakes[key];
-        if (!clients[key].isConnected)
+        if (clients[key].isConnected)
+            clients[key].emit("collision", snake.score);
+        else
             delete clients[key];
     }
 };
