@@ -20,14 +20,14 @@ let clients = {};
 let snakes = {};
 
 io.sockets.on("connection", function(client) {
-	client.id = Math.random();
+	client.id = randomString(32);
 	client.isPlaying = false;
 	clients[client.id] = client;
-	console.log(client.id + " connected");
+	console.log("Player " + client.id + " connected");
 	client.on("joinGame", function(snake) {
 		snakes[client.id] = snake;
 		client.isPlaying = true;
-		console.log(client.id + " joined the game");
+		console.log("Player " + client.id + " joined the game");
 	});
 	client.on("keyPress", function(direction) {
 		if (client.isPlaying)
@@ -36,7 +36,7 @@ io.sockets.on("connection", function(client) {
 	client.on("disconnect", function () {
 		delete clients[client.id];
 		delete snakes[client.id];
-		console.log(client.id + " left the game");
+		console.log("Player " + client.id + " left the game");
 	});
 });
 
@@ -88,4 +88,13 @@ function updateSnake(snake) {
 	}
 	snake.nodes[0].x = ((snake.nodes[0].x % gridSize) + gridSize) % gridSize;
 	snake.nodes[0].y = ((snake.nodes[0].y % gridSize) + gridSize) % gridSize;
+}
+
+function randomString(length) {
+	let text = "";
+	var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	for(var i = 0; i < length; i++) {
+		text += possible.charAt(parseInt(Math.random() * possible.length));
+	}
+	return text;
 }
