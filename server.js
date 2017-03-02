@@ -4,6 +4,15 @@ const port = process.env.PORT || 8080;
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 
+app.use("*", function (req, res, next) {
+    if (process.env.NODE_ENV === 'production')
+        if (req.headers['x-forwarded-proto'] != 'https')
+            return res.redirect('https://' + req.headers.host + req.url);
+        else
+            return next();
+    else
+        return next();
+});
 app.use(express.static(__dirname + "/client"));
 app.all("*", function (req, res) {
     res.redirect("/");
